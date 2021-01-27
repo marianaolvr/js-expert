@@ -1,31 +1,28 @@
-//view = tudo que corresponde à tela
-
 class View {
     constructor() {
 
     }
 
-    // função para criar o elemento de vídeo
-    createVideoElement({ muted = true, src, srcObject }){
+    createVideoElement({ muted = true, src, srcObject }) {
         const video = document.createElement('video')
         video.muted = muted
         video.src = src
         video.srcObject = srcObject
 
-        if(src) {
+        if (src) {
             video.controls = true
             video.loop = true
             Util.sleep(200).then(_ => video.play())
         }
-        // com o vídeo preperado, pode dar play
-        if(srcObject) {
+
+        if (srcObject) {
             video.addEventListener("loadedmetadata", _ => video.play())
         }
+
         return video
     }
 
-    //sempre criar um elemento novo de vídeo a cada vídeo que chegar, seja URL ou stream
-    renderVideo({ userId, stream = null, url = null, isCurrentId = false, muted = true }){
+    renderVideo({ userId, stream = null, url = null, isCurrentId = false, muted = true }) {
         const video = this.createVideoElement({
             muted,
             src: url,
@@ -34,7 +31,7 @@ class View {
         this.appendToHTMLTree(userId, video, isCurrentId)
     }
 
-    appendToHTMLTree(userId, video, isCurrentId){
+    appendToHTMLTree(userId, video, isCurrentId) {
         const div = document.createElement('div')
         div.id = userId
         div.classList.add('wrapper')
@@ -49,7 +46,7 @@ class View {
 
     setParticipants(count) {
         const myself = 1
-        const participants =  document.getElementById('participants')
+        const participants = document.getElementById('participants')
         participants.innerHTML = (count + myself)
     }
 }

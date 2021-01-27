@@ -1,9 +1,9 @@
-const server = require('http').createServer((resquest, response) => {
+const server = require('http').createServer((request, response) => {
     response.writeHead(204, {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
     })
-    response.end('olarr!')
+    response.end('hey there!')
 })
 
 const socketIo = require('socket.io')
@@ -14,14 +14,12 @@ const io = socketIo(server, {
     }
 })
 
-//manipulando os eventos. para cada cliente um socket específico
 io.on('connection', socket => {
     console.log('connection', socket.id)
-    //evento join-room retornado do front-end
     socket.on('join-room', (roomId, userId) => {
-        //adiciona os usuarios na mesma sala
+        
+        // adiciona os usuarios na mesma sala
         socket.join(roomId)
-        //emite evento para os demais clientes na sala quando a pessoa é conectada ou desconectada
         socket.to(roomId).broadcast.emit('user-connected', userId)
         socket.on('disconnect', () => {
             console.log('disconnected!', roomId, userId)
